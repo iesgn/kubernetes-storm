@@ -15,10 +15,12 @@
 
 ## Unidad 2: Despliegue de aplicaciones con k8s (I)
 
+* [Presentación unidad](unidad2/presentacion_unidad2.pdf)
 * Pods
 * ReplicaSet: Tolerancia y escalabilidad
 * Deployment: Actualizaciones y despliegues automáticos
 * Estrategias de despliegue en k8s: blue/green, canary, etc.
+* [Ejemplos](unidad2/README.md)
 
 ## Uniadad 3: Accesos a las aplicaciones desplegadas
 
