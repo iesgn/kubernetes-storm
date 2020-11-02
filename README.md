@@ -22,12 +22,14 @@
 * Estrategias de despliegue en k8s: blue/green, canary, etc.
 * [Ejemplos](unidad2/README.md)
 
-## Uniadad 3: Accesos a las aplicaciones desplegadas
+## Unidad 3: Acceso a las aplicaciones desplegadas en k8s
 
+* [Presentación unidad](unidad2/presentacion_unidad3.pdf)
 * Services
 * DNS
 * Ingress
 * Ejemplos de uso y despliegues
+* [Ejemplos](unidad3/README.md)
 
 ## Unidad 4: Despliegue de aplicaciones con k8s (II)
 
