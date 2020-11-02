@@ -100,7 +100,7 @@ Por último si borramos un ReplicaSet se borraran todos los pods asociados:
 
 Cuando creamos un Deployment, se crea el ReplicaSet asociado y todos los pods que hayamos indicado.
 
-    kubectl create -f nginx-deployment.yaml
+    kubectl apply -f nginx-deployment.yaml
     kubectl get deploy,rs,pod
 
 Como ocurría con los replicaSets los Deployment también se pueden escalar, aumentando o disminuyendo el número de pods asociados:
@@ -175,9 +175,9 @@ Ahora vamos a desplegar una versión que da un error (versión no existe). ¿Pod
 
 ## Ejemplo 6: guestbook (parte 1)
 
-    kubectl create -f frontend-deployment.yaml
-    kubectl create -f redis-master-deployment.yaml
-    kubectl create -f redis-slave-deployment.yaml
+    kubectl apply -f frontend-deployment.yaml
+    kubectl apply -f redis-master-deployment.yaml
+    kubectl apply -f redis-slave-deployment.yaml
 
     kubectl port-forward deployment/guestbook 3000:3000
 
