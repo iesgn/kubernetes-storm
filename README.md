@@ -1,6 +1,6 @@
 # Kubernetes for Storm
 
-## Unidad 1: Despliegue de aplicaciones en contenedores. Introducción a k8s
+## Unidad 1: Despliegue de aplicaciones en contenedores
 
 * [Presentación unidad](unidad1/presentacion_unidad1.pdf)
 * Despliegue de aplicaciones en contenedores.
