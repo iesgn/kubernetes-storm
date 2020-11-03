@@ -22,21 +22,23 @@
   * ReplicaSet: Tolerancia y escalabilidad
   * Deployment: Actualizaciones y despliegues automáticos
   * Estrategias de despliegue en k8s: blue/green, canary, etc.
-* [Ejemplos](unidad3/README.md)
-* [Presentación unidad](unidad2/presentacion_unidad3-2.pdf)
+* [Ejemplos](unidad3/ejemplo1.md)
+
+* [Presentación unidad](unidad3/presentacion_unidad3-2.pdf)
   * Services
   * DNS
   * Ingress
   * Ejemplos de uso y despliegues
-* [Ejemplos](unidad3/README.md)
-* [Presentación unidad](unidad2/presentacion_unidad3-3.pdf)
-* Configuración de aplicaciones: Variables de entorno, ConfigMaps, Secrets, ...
-* Ejemplo de despliegue parametrizado
-* StatefulSet
-* DaemonSet
-* AutoScale
-* Jobs, cronjobs
-* [Ejemplos](unidad3/README.md)
+* [Ejemplos](unidad3/ejemplo2.md)
+
+* [Presentación unidad](unidad3/presentacion_unidad3-3.pdf)
+  * Configuración de aplicaciones: Variables de entorno, ConfigMaps, Secrets, ...
+  * Ejemplo de despliegue parametrizado
+  * StatefulSet
+  * DaemonSet
+  * AutoScale
+  * Jobs, cronjobs
+* [Ejemplos](unidad3/ejemplo3.md)
 
 ## Unidad 4: Despliegue de aplicaciones con Helm
 
