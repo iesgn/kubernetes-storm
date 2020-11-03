@@ -9,48 +9,41 @@
   * Tecnologías subyacentes y diferencias entre ellas: docker, cri-o, LXC, ...
   * Ciclo de vida en el despliegue de aplicaciones con docker
 
-* Introducción a kubernetes
+## Unidad 2: Introducción a kubernetes
+* [Presentación unidad](unidad2/presentacion_unidad2.pdf)
   * Características, historia, estado actual del proyecto kubernetes (k8s)
   * Arquitectura básica de k8s
   * Alternativas para instalación simple de k8s: minikube, kubeadm, k3s
 
-## Unidad 2: Despliegue de aplicaciones con k8s (I)
+## Unidad 3: Despliegue de aplicaciones con k8s
 
-* [Presentación unidad](unidad2/presentacion_unidad2.pdf)
-* Pods
-* ReplicaSet: Tolerancia y escalabilidad
-* Deployment: Actualizaciones y despliegues automáticos
-* Estrategias de despliegue en k8s: blue/green, canary, etc.
-* [Ejemplos](unidad2/README.md)
-
-## Unidad 3: Acceso a las aplicaciones desplegadas en k8s
-
-* [Presentación unidad](unidad2/presentacion_unidad3.pdf)
-* Services
-* DNS
-* Ingress
-* Ejemplos de uso y despliegues
+* [Presentación unidad](unidad3/presentacion_unidad3-1.pdf)
+  * Pods
+  * ReplicaSet: Tolerancia y escalabilidad
+  * Deployment: Actualizaciones y despliegues automáticos
+  * Estrategias de despliegue en k8s: blue/green, canary, etc.
 * [Ejemplos](unidad3/README.md)
-
-## Unidad 4: Despliegue de aplicaciones con k8s (II)
-
+* [Presentación unidad](unidad2/presentacion_unidad3-2.pdf)
+  * Services
+  * DNS
+  * Ingress
+  * Ejemplos de uso y despliegues
+* [Ejemplos](unidad3/README.md)
+* [Presentación unidad](unidad2/presentacion_unidad3-3.pdf)
 * Configuración de aplicaciones: Variables de entorno, ConfigMaps, Secrets, ...
 * Ejemplo de despliegue parametrizado
 * StatefulSet
 * DaemonSet
 * AutoScale
 * Jobs, cronjobs
-  
- ## Unidad 5: Almacenamiento persistente en k8s
+* [Ejemplos](unidad3/README.md)
+
+## Unidad 4: Despliegue de aplicaciones con Helm
+
+## Unidad 5: Almacenamiento persistente en k8s
  
 * Almacenamiento
-* PersistantVolumen
-* PersistentVolumenClaim
-* 
+* PersistantVolume
+* PersistentVolumeClaim
 
-
-* Despliegue de aplicaciones con Helm
-
-
-
-* Despliegue de aplicaciones de k8s en entornos en producción
+## Unidad 6: Despliegue de aplicaciones de k8s en entornos en producción
