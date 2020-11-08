@@ -1,5 +1,32 @@
 # Unidad 3: Despliegue de aplicaciones con k8s (I)
 
+## Antes de empezar
+
+Iniciamos minikube:
+
+    minikube start
+
+Comprobamos los nodos que hay en nuestro cluster y pedimos detalles del nodo:
+
+    kubctl get nodes
+    kubectl describe node minikube
+
+Nosotros estamos trabajando en el espacio de nombres `default`:
+
+    kubectl get ns
+
+Podemos ver que con `kubectl` podemos acceder a la API de nuestro cluster de kubernetes, por que en el fichero `~/.kube/config` tengo definido las credenciales:
+
+    cat ~/.kube/config
+
+Finalmente podemos ver los distintos recursos que nos ofrece la API de kubernetes ejecutando:
+
+    kubectl proxy
+
+Y podemos acceder a un recurso de la API, por ejemplo a la información de los nodos del cluster:
+
+    http://localhost:8001/api/v1/nodes
+
 ## Ejemplo 1: Pod
 
 Para crear el pod desde el fichero yaml:
