@@ -39,6 +39,7 @@
   * AutoScale
   * Jobs, cronjobs
 * [Ejemplos](unidad3/ejemplo3.md)
+* [Ejemplo de aplicación de prueba desarrollada en core net para su despliegue en k8s](https://github.com/josedom24/k8s_core_net)
 
 ## Unidad 4: Despliegue de aplicaciones con Helm
 
