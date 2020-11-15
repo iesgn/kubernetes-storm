@@ -187,24 +187,62 @@ Vamos a desplegar la aplicación mediawiki:
     kubectl apply -f mediawiki-deploy.yaml --record
     kubectl get all
 
-Comprobamos el historial de actualizaciones y desplegamos una nueva versión:
+Comprobamos que se puede acceder a la aplicación y veremos la versión
+desplegada:
+
+    kubectl port-forward deployment/mediawiki 8080:80
+
+Esta despliegue de mediawiki no está conectado a una base de datos
+común, por lo que si optamos por usar una base de datos local
+(sqlite), no habrá consistencia en los datos entre los pods y además
+no permanecerán si uno de los pods se elimina.
+
+Con la opción `--record` guardamos el comando como una anotación del
+despliegue (simplemente a título informativo, no hace nada
+más). Comprobamos el historial de actualizaciones y desplegamos una
+nueva versión:
 
     kubectl rollout history deployment/mediawiki
-    kubectl set image deployment/mediawiki mediawiki=mediawiki:1.27 --all --record
+    kubectl set image deployment/mediawiki mediawiki=mediawiki:1.31.10 --all --record
     kubectl get all
 
-Ahora vamos a desplegar una versión que da un error (versión no existe). ¿Podremos volver al despliegue anterior?
+Ahora vamos a desplegar una versión que da un error (versión no
+existe). ¿Podremos volver al despliegue anterior?
 
     kubectl rollout history deployment/mediawiki
-    kubectl set image deployment/mediawiki mediawiki=mediawiki:2 --all --record
-    kubectl rollout undo deployment/mediawiki
+    kubectl set image deployment/mediawiki mediawiki=mediawiki:2 --all  --record
+
+Dependiendo de la estrategia de despliegue, esto puede provocar que la
+aplicación se quede en la versión anterior o que no haya ningún pod
+válido desplegado. En cualquier caso, se puede volver a la versión
+anterior del despliegue mediante `rollout`:
+
+    kubectl rollout undo deployment mediawiki
     kubectl get all
+
+Este ejercicio nos sirve para ver de manera rápida y fácil la gestión
+que hace kubernetes de las diferentes versiones y como podemos volver
+rápidamente a un despliegue de una versión anterior, pero todavía no
+podemos realizar despliegues reales porque no sabemos cómo conectar
+diferentes despliegues (servicios o microservicios) entre sí.
 
 ## Ejemplo 6: guestbook (parte 1)
+
+Procedemos ahora a la ejecución de una aplicación "completa" de
+ejemplo en la que varios despliegues se relacionan entre sí:
 
     kubectl apply -f frontend-deployment.yaml
     kubectl apply -f redis-master-deployment.yaml
     kubectl apply -f redis-slave-deployment.yaml
 
+En este despliegue se han creado tres pods de la aplicación
+"guestbook" que almacena sus datos en un servidor redis principal y
+que está replicado en tres servidores redis secundarios. Podemos usar
+y acceder a la aplicación en modo pruebas mediante "port-forward":
+
     kubectl port-forward deployment/guestbook 3000:3000
 
+Aunque esta aplicación ya tiene separados los servicios o
+microservicios en diferentes despliegues, no pueden conectarse entre
+sí todavía porque debemos usar algún mecanismo para que se puedan
+comunicar.

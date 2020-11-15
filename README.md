@@ -17,28 +17,28 @@
 
 ## Unidad 3: Despliegue de aplicaciones con k8s
 
-* [Presentación unidad](unidad3/presentacion_unidad3-1.pdf)
+* [Presentación unidad 3.1](unidad3/presentacion_unidad3-1.pdf)
   * Pods
   * ReplicaSet: Tolerancia y escalabilidad
   * Deployment: Actualizaciones y despliegues automáticos
   * Estrategias de despliegue en k8s: blue/green, canary, etc.
-* [Ejemplos](unidad3/ejemplo1.md)
+* [Ejemplos 3-1](unidad3/ejemplos3-1.md)
 
-* [Presentación unidad](unidad3/presentacion_unidad3-2.pdf)
+* [Presentación unidad 3.2](unidad3/presentacion_unidad3-2.pdf)
   * Services
   * DNS
   * Ingress
   * Ejemplos de uso y despliegues
-* [Ejemplos](unidad3/ejemplo2.md)
+* [Ejemplos 3-2](unidad3/ejemplos3-2.md)
 
-* [Presentación unidad](unidad3/presentacion_unidad3-3.pdf)
+* [Presentación unidad 3.3](unidad3/presentacion_unidad3-3.pdf)
   * Configuración de aplicaciones: Variables de entorno, ConfigMaps, Secrets, ...
   * Ejemplo de despliegue parametrizado
   * StatefulSet
   * DaemonSet
   * AutoScale
   * Jobs, cronjobs
-* [Ejemplos](unidad3/ejemplo3.md)
+* [Ejemplos 3-3](unidad3/ejemplos3-3.md)
 * [Ejemplo de aplicación de prueba desarrollada en core net para su despliegue en k8s](https://github.com/josedom24/k8s_core_net)
 
 ## Unidad 4: Despliegue de aplicaciones con Helm
