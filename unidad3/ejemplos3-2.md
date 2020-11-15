@@ -111,12 +111,18 @@ la carga entre ellos:
 
 Al acceder hay que indicar el puerto asignado al servicio:
 
-    for i in `seq 1 100`; do curl http://192.168.99.100:32376; done
+    for i in `seq 1 100`; do curl http://<MASTER-IP>:<SVC-PORT>; done
     Servidor:pagweb-84f6d54fb7-56zj6
     Servidor:pagweb-84f6d54fb7-mdvfn
     Servidor:pagweb-84f6d54fb7-bhz4p
 
 ## Ejemplo 5: Servicio para acceder a servidor remoto
+
+Supongamos que tenemos una aplicación desplegada en kubernetes que
+tiene que acceder a un servicio externo, por ejemplo, una base de
+datos. En ese caso podemos definir un servicio que puedan usar todos
+los pods del espacio de nombres y asociado a él un "endpoint" que
+apunte al servicio externo.
 
 Creamos el servicio:
 
@@ -129,14 +135,13 @@ Creamos el endpoint:
 Comprobamos que el servicio está apuntando al endpoint:
 
     kubectl describe service mariadb
-
-Creamos un pod con un cliente de mariadb y accedemos usando el nombre del servicio:
-
-    kubectl apply -f mariadb-deployment.yaml 
-
-    kubectl exec -it pod/mariadb -- mysql -u prueba -p -h mariadb.default.svc.cluster.local
+	kubectl describe endpoints mariadb
 
 ## Ejemplo 6: Despliegue canary
+
+Vamos a realizar de forma simple un despliegue de tipo canario, pero
+ya que esta estrategia no está implementada directamente en k8s,
+usamos dos despliegues diferentes, en lugar de dos replicasets.
 
 Creamos el servicio y el despliegue de la primera versión (5 réplicas):
 
@@ -156,20 +161,77 @@ Desplegamos una réplica de la versión 2, para ver si funciona bien:
 
     kubectl apply -f deploy2.yaml
 
-Una vez que comprobamos que funciona bien, podemos escalar y eliminar la versión 1:
+Una vez que comprobamos que funciona bien, podemos escalar y eliminar
+la versión 1:
 
     kubectl scale --replicas=5 deploy my-app-v2
     kubectl delete deploy my-app-v1
 
 ## Ejemplo 7: ingress
 
+En primer lugar vamos a habilitar el complemento ingress en minikube,
+esto lo que hace es crear una serie de objetos k8s en el espacio de
+nombres `kube-system`:
+
     minikube addons enable ingress
     kubectl get pod -n kube-system
     
-    kubectl apply -f nginx-ingress.yaml 
+Para probar que funciona correctamente ingress en nuestro cluster de
+k8s, vamos a hacer un despliegue de pruebas y vamos a acceder a él
+desde el exterior:
+
+Ejecutamos un despligue de nginx:
+
+    kubectl apply -f deployment.yaml
+	
+Asociamos un servicio de tipo NodePort:
+
+    kubectl apply -f service_np.yaml
+	
+Averiguamos la IP de nuestro cluster de minikube:
+
+	minikube ip
+	
+O también podríamos obtener con minikube la URL del servicio `nginx`:
+
+	minikube service nginx --url
+	
+Con estos datos editamos el YAML del ingress y hacemos uso de
+`nip.io`:
+
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: nginx.<MASTER IP>.nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80
+```
+	
+    kubectl apply -f ingress.yaml
+	
+Comprobamos que se ha definido el objeto ingress y abrimos en el
+navegador usando el "nombre" de `nip.io`:
+
     kubectl get ingress
 
 ## Ejemplo 8: LetsChat
+
+Esto es un ejemplo de una aplicación "completa" de dos capas, que
+tiene define dos despliegues diferentes, cada uno con su servicio
+respectivo y es accesible desde el exterior.
 
     kubectl apply -f letschat-deployment.yaml
     kubectl apply -f mongo-deployment.yaml
@@ -178,3 +240,11 @@ Una vez que comprobamos que funciona bien, podemos escalar y eliminar la versió
     kubectl apply -f mongo-srv.yaml
     
     kubectl apply -f ingress.yaml
+
+También sería posible crear la aplicación completa con:
+
+    kubectl apply -f ejemplo8/
+
+Para comprobar el funcionamiento hay que editar el fichero de
+resolución estática del equipo y que `www.letschat.com` apunte a la
+dirección IP de minikube (o del cluster de k8s en su caso).
