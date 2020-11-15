@@ -1,14 +1,21 @@
-# Unidad 3: Acceso a las aplicaciones desplegadas en k8s
+# Unidad 3 (II): Acceso a las aplicaciones desplegadas en k8s
 
 ## Ejemplo 1: Services
 
-**Service ClusterIP**
+Vamos a crear un despliegue básico compuesto de dos pods nginx y vamos
+a definir para el mismo un servicio de tipo ClusterIP y luego otro de
+tipo NodePort.
 
     kubectl apply -f deployment.yaml
+	
+**Service ClusterIP**
 
-    kubectl apply -f service_ci.yaml
+Creamos el servicio de tipo ClusterIP:
 
-También podríamos haber creado el servicio sin usar el fichero yaml, de la siguiente manera:
+    kubectl apply -f service_clusterip.yaml
+
+También podríamos haber creado el servicio sin usar el fichero yaml,
+mediante comandos imperativos, de la siguiente manera:
 
     kubectl expose deployment/nginx --port=80 --type=ClusterIP
 
@@ -26,6 +33,10 @@ Y accedemos a la URL:
 
 **Service NodePort**
 
+Eliminamos el servicio anterior y creamos un servicio de tipo
+nodeport:
+
+    kubectl delete service nginx
     kubectl apply -f service_np.yaml
 
 También podríamos haber creado el servicio sin usar el fichero yaml, de la siguiente manera:
@@ -36,11 +47,20 @@ Podemos ver el servicio que hemos creado:
 
     kubectl get svc
 
-Desde el exterior accedemos a:
+O de forma detallada con:
+
+    kubectl describe service nginx
+	
+Podemos ver que además de una IP de cluster (rango 10.102.*.* en el
+caso de minikube), se ha creado un puerto superior al 30000/tcp en uno
+de los nodos controladores y podemos acceder al servicio desde el
+exterior a través del mismo:
 
     http://<IP_MASTER>:<PUERTO_ASIGNADO>
 
 ## Ejemplo 2: guestbook (parte 2)
+
+Creamos servicios para los despliegues de "guestbook":
 
     kubectl apply -f frontend-deployment.yaml
     kubectl apply -f redis-master-deployment.yaml
@@ -49,6 +69,18 @@ Desde el exterior accedemos a:
     kubectl apply -f redis-master-srv.yaml
     kubectl apply -f redis-slave-srv.yaml
 
+También podríamos hacer:
+
+    kubectl apply -f ejemplo2/
+
+Los servicios para redis se definen como clusterIP y el accesible
+desde el exterior como nodeport.
+
+También podemos eliminarlo todo con:
+
+    kubectl delete -f ejemplo2/
+
+Aunque lo dejamos funcionando para probar el siguiente ejemplo.
 
 ## Ejemplo 3: DNS
 
@@ -64,11 +96,14 @@ Comprobando el servidor DNS:
 
 ## Ejemplo 4: Balanceo de carga
 
-Hemos creado una imagen docker que nos permite crear un contenedor con una aplicación PHP que muestra el nombre del servidor donde se ejecuta, el fichero index.php:
+Hemos creado una imagen docker que nos permite crear un contenedor con
+una aplicación PHP que muestra el nombre del servidor donde se
+ejecuta, el fichero index.php:
 
     <?php echo "Servidor:"; echo gethostname();echo "\n"; ?>
 
-Si tenemos varios pod de esta aplicación, el objeto Service balancea la carga entre ellos:
+Si tenemos varios pod de esta aplicación, el objeto Service balancea
+la carga entre ellos:
 
     kubectl create deployment pagweb --image=josedom24/infophp:v1
     kubectl expose deploy pagweb --port=80 --type=NodePort
@@ -80,7 +115,6 @@ Al acceder hay que indicar el puerto asignado al servicio:
     Servidor:pagweb-84f6d54fb7-56zj6
     Servidor:pagweb-84f6d54fb7-mdvfn
     Servidor:pagweb-84f6d54fb7-bhz4p
-
 
 ## Ejemplo 5: Servicio para acceder a servidor remoto
 
