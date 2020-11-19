@@ -175,7 +175,10 @@ Para borrar los volúmenes:
 
     kubectl delete --all pv,pvc
 
-## Ejemplo 6: DaemontSet
+## Ejemplo 6: DaemonSet
+
+Para ver este ejemplo es necesario tener un clúster con varios nodos
+(workers), en este caso se ha utilizado un cluster con k3s:
 
     kubectl get nodes
     NAME    STATUS   ROLES    AGE   VERSION
@@ -196,20 +199,20 @@ pod por medio de un selector.
 
     kubectl create -f ds2.yaml
 
-    kubectl get pods -o wide      
+    kubectl get pods -o wide
     No resources found.
 
-    kubectl get ds          
+    kubectl get ds
     NAME      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR      AGE
     logging   0         0         0       0            0           app=logging-node   17s
 
     kubectl label node k3s-3 app=logging-node --overwrite
 
-    kubectl get ds                                       
+    kubectl get ds
     NAME      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR      AGE
     logging   1         1         0       1            0           app=logging-node   41s
 
-    kubectl get pods -o wide                             
+    kubectl get pods -o wide
     NAME            READY   STATUS    RESTARTS   AGE   IP           NODE    NOMINATED NODE   READINESS GATES
     logging-556r9   1/1     Running   0          7s    10.42.1.56   k3s-3   <none>           <none>
 
