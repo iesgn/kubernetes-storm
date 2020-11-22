@@ -41,7 +41,13 @@
 * [Ejemplos 3-3](unidad3/ejemplos3-3.md)
 * [Ejemplo de aplicación de prueba desarrollada en core net para su despliegue en k8s](https://github.com/josedom24/k8s_core_net)
 
-## Unidad 4: Despliegue de aplicaciones con Helm
+## Unidad 4: Despliegue de aplicaciones completas
+
+* [Presentación unidad 4](unidad4/presentacion_unidad4.pdf)
+  * Herramientas para desplegar aplicaciones
+  * Helm
+  * Instalación y uso básico
+* [Ejemplos 4](unidad4/ejemplos4.md)
 
 ## Unidad 5: Almacenamiento persistente en k8s
  

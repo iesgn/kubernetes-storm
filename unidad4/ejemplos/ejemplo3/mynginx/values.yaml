@@ -1,0 +1,9 @@
+replicaCount: 3
+
+service:
+  type: NodePort
+
+ingress:
+  enabled: true
+  hosts:
+    - host: nginx.192.168.39.250.nip.io

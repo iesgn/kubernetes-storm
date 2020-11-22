@@ -1,6 +1,8 @@
-Chart de nginx de José Domingo
+Chart de nginx para acceder por ingress o directamente al servicio.
 {{- if .Values.ingress.enabled -}}
-* Para acceder a nginx puedes usar el nombre de dominio indicado, para obtenerlo:
+
+ Has configurado ingress. Para acceder a nginx puedes usar el nombre de
+  dominio indicado, para obtenerlo:
   {{- range .Values.ingress.hosts }}
    NGINX URL: http://{{ .host  }}
   {{- end}}
