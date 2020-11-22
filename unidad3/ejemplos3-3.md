@@ -95,85 +95,52 @@ a la aplicación utilizando un nombre:
 
 ## Ejemplo 5: StatefulSet
 
-Vamos a crear los distintos objetos de la API:
+Vamos a probar un ejemplo típico de aplicación stateful: Una base de
+datos con un primario (recibe lecturas y escrituras) y varios
+secundarios (reciben solo lecturas).
 
-    kubectl create -f service.yaml
+Este ejemplo pertenece a la doc de k8s:
 
-### Creación ordenada de pods
+[https://kubernetes.io/docs/tasks/run-application/run-replicated-stateful-application/](https://kubernetes.io/docs/tasks/run-application/run-replicated-stateful-application/)
 
-En un terminal observamos la creación de pods y en otro terminal creamos los pods
+Definimos el configmap:
 
-    watch kubectl get pod
-    kubectl create -f statefulset.yaml
+    kubectl apply -f https://k8s.io/examples/application/mysql/mysql-configmap.yaml
 
-### Comprobamos la identidad de red estable
+Definimos los un servicio "headless" para el master (sin IP) y el
+servicio general solo de lectura (quien quiera conectarse al primario,
+deberá hacerlo a mysql-0.mysql:
 
-Vemos los `hostname` y los nombres DNS asociados:
+    kubectl apply -f https://k8s.io/examples/application/mysql/mysql-services.yaml
 
-    for i in 0 1; do kubectl exec web-$i -- sh -c 'hostname'; done
-    web-0
-    web-1
+Definimos el statefulset:
 
-    kubectl run -i --tty --image busybox:1.28 dns-test --restart=Never --rm
-    / # nslookup web-0.nginx
-    ...
-    Address 1: 172.17.0.4 web-0.nginx.default.svc.cluster.local
-    / # nslookup web-1.nginx
-    ...
-    Address 1: 172.17.0.5 web-1.nginx.default.svc.cluster.local
+    kubectl apply -f https://k8s.io/examples/application/mysql/mysql-statefulset.yaml
 
-### Eliminación de pods
+En el caso de que no sea posible levantar todos los pods (en el caso
+de minikube puede ocurrir por falta de recursos en la MV), se puede
+reducir el número de réplicas:
 
- En un terminal observamos la creación de pods y en otro terminal eliminamos los pods
+    kubectl scale statefulset mysql --replicas=2
+	
+Probamos a hacer una escritura en la base de datos (al primario
+mysql-0.mysql), creando una base de datos con un pod efímero:
 
-    watch kubectl get pod
-    kubectl delete pod -l app=nginx
+```
+kubectl run mysql-client --image=mysql:5.7 -i --rm --restart=Never --\
+  mysql -h mysql-0.mysql <<EOF
+CREATE DATABASE test;
+CREATE TABLE test.messages (message VARCHAR(250));
+INSERT INTO test.messages VALUES ('hello');
+EOF
+```
 
-Comprobamos la identidad de red estable: Vemos los hostnames y los nombres DNS asociados (Las IP pueden cambiar):
+Y comprobamos la lectura desde cualquiera de ellos:
 
-    for i in 0 1; do kubectl exec web-$i -- sh -c 'hostname'; done
-
-    kubectl run -i --tty --image busybox:1.28 dns-test --restart=Never --rm
-    / # nslookup web-0.nginx
-    / # nslookup web-1.nginx
-
-### Escribiendo en los volúmenes persistentes
-
-Comprobamos que se han creado volúmenes para los pods:
-
-    kubectl get pv,pvc
-
-Escribimos en los documentroot y accedemos al servidor:
-
-    for i in 0 1; do kubectl exec "web-$i" -- sh -c 'echo "$(hostname)" > /usr/share/nginx/html/index.html'; done
-    for i in 0 1; do kubectl exec -i -t "web-$i" -- sh -c 'curl http://localhost/'; done
-    web-0
-    web-1
-
-Volvemos a eliminar los pods, y comprobamos que la información es persistente al estar guardadas en los volúmenes:
-
-    kubectl delete pod -l app=nginx
-    for i in 0 1; do kubectl exec -i -t "web-$i" -- sh -c 'curl http://localhost/'; done
-
-### Escalar statefulset
-
-Escalamos a más o menos pods:
-
-    kubectl scale sts web --replicas=5
-
-Comprobamos los pods y los volúmenes:
-
-    kubectl get pod,pv,pvc
-
-Si reducimos el número de pods los volúmenes no se eliminan.
-
-Para terminar eliminamos el statefulset y el service:
-
-    kubectl delete -f .
-
-Para borrar los volúmenes:
-
-    kubectl delete --all pv,pvc
+```
+kubectl run mysql-client-loop --image=mysql:5.7 -i -t --rm --restart=Never --\
+  bash -ic "while sleep 1; do mysql -h mysql-read -e 'SELECT @@server_id,NOW()'; done"
+```
 
 ## Ejemplo 6: DaemonSet
 
