@@ -57,4 +57,7 @@
   * PersistentVolumeClaim
 * [Ejemplos 5](unidad5/ejemplos5.md)
 
+## Unidad 6: 
 
+* Despliegue de aplicaciones de k8s en entornos en producción
+* Espacios de nombres, usuarios, RBAC
