@@ -61,3 +61,4 @@
 
 * Despliegue de aplicaciones de k8s en entornos en producción
 * Espacios de nombres, usuarios, RBAC
+* [Kubernetes y dockershim](https://kubernetes.io/blog/2020/12/02/dockershim-faq/)
